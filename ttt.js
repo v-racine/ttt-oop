@@ -66,6 +66,9 @@ class Square {
     this.marker = marker;
   }
 
+  isUnused() {
+    return this.marker === Square.UNUSED_SQUARE;
+  }
 }
 
 class Board {
@@ -95,6 +98,11 @@ class Board {
   markSquareAt(key, marker) {
     this.squares[key].setMarker(marker);
   }
+
+  unusedSquares() {
+    let keys = Object.keys(this.squares);
+    return keys.filter((key) => this.squares[key].isUnused());
+  }
 }
 
 class Row {
@@ -112,14 +120,7 @@ class Player {
   getMarker() {
     return this.marker;
   }
-  
 
-  play() {
-    //STUB
-    //We need a way for each player to play the game
-    //Do we need to access the board?
-
-  }
 }
 
 class Human extends Player {
@@ -150,13 +151,10 @@ class TTTGame {
       this.board.display();
 
       this.humanMoves();
-      this.board.display(); //just to see the human's move
       if (this.gameOver()) break;
 
       this.computerMoves();
-      this.board.display(); //to see the computer's move 
       if (this.gameOver()) break;
-      break; // <= execute only 1 loop for now 
     }
 
     this.displayResults();
@@ -180,12 +178,11 @@ class TTTGame {
     let choice;
 
     while(true) {
-      choice = readline.question("Choose a square between 1 and 9: ");
+      let validChoices = this.board.unusedSquares();
+      const prompt =  `Choose a square (${validChoices.join(", ")}): `;
+      choice = readline.question(prompt);
 
-      let integerValue = parseInt(choice, 10);
-      if (integerValue >= 1 && integerValue <= 9) {
-        break;
-      }
+      if (validChoices.includes(choice)) break;
 
       console.log("Sorry, that's not a valid choice.");
       console.log("");
@@ -195,7 +192,13 @@ class TTTGame {
   }
 
   computerMoves() {
-    let choice = Math.floor((9 * Math.random()) + 1);
+    let validChoices = this.board.unusedSquares();
+    let choice; 
+    
+    do {
+      choice = Math.floor((9 * Math.random()) + 1).toString();
+    } while (!validChoices.includes(choice));
+
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
 
