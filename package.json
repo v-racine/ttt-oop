@@ -18,5 +18,9 @@
   "homepage": "https://github.com/v-racine/ttt-oop#readme",
   "dependencies": {
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2"
   }
 }
