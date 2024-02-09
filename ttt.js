@@ -46,21 +46,44 @@ VERBS for `Player`:
 //NOTE: These nouns and verbs provide a general list of the types of objects we'll 
 //need (the nouns), and the behaviors that each object should implement (the verbs).
 
-//CODE: 1. Scaffolding
+//CODE:
 
-class Boards {
-  constructor() {
-    //STUB 
-    //We need to model the 3x3 grid. Perhaps "squares"?
-    //Data Structure?
-    //What should the data structure store?
+class Square {
+  static UNUSED_SQUARE = " ";
+  static HUMAN_MARKER = "X";
+  static COMPUTER_MARKER = "O";
+
+  constructor(marker = Square.UNUSED_SQUARE) {
+    this.marker = marker;
+  }
+  toString() {
+    return this.marker;
   }
 }
 
-class Square {
+class Board {
   constructor() {
-    //STUB
-    //We need some way to keep track of this square's marker 
+    //STUB 
+    this.squares = {};
+    for (let counter = 1; counter <= 9; counter++) {
+      this.squares[String(counter)] = new Square();
+    }
+  }
+
+  display() {
+    console.log("");
+    console.log("     |     |");
+    console.log(`  ${this.squares["1"]}  |  ${this.squares["2"]}  |  ${this.squares["3"]}`);
+    console.log("     |     |");
+    console.log("-----+-----+-----");
+    console.log("     |     |");
+    console.log(`  ${this.squares["4"]}  |  ${this.squares["5"]}  |  ${this.squares["6"]}`);
+    console.log("     |     |");
+    console.log("-----+-----+-----");
+    console.log("     |     |");
+    console.log(`  ${this.squares["7"]}  |  ${this.squares["8"]}  |  ${this.squares["9"]}`);
+    console.log("     |     |");
+    console.log("");
   }
 }
 
@@ -113,8 +136,7 @@ class Computer extends Player {
 //Orchestration Engine
 class TTTGame {
   constructor() {
-    //STUB
-    //Need a board and two players
+    this.board = new Board();
   }
 
   play() {
@@ -122,7 +144,7 @@ class TTTGame {
     this.displayWelcomeMessage();
     
     while(true) {
-      this.displayBoard();
+      this.board.display();
 
       this.firstPlayerMoves();
       if (this.gameOver()) break;
@@ -150,10 +172,9 @@ class TTTGame {
     //print the results of this game (win, lose, tie)
   }
 
-  displayBoard() {
-    //STUB
-    //display the board, including its current state
-  }
+ 
+ 
+    
 
   firstPlayerMoves() {
     //STUB
